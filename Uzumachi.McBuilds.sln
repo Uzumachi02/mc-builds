@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uzumachi.McBuilds.Core", "U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uzumachi.McBuilds.Data", "Uzumachi.McBuilds.Data\Uzumachi.McBuilds.Data.csproj", "{5020A5AA-C626-440D-9A54-F45891ACB342}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uzumachi.McBuilds.Migrations", "Uzumachi.McBuilds.Migrations\Uzumachi.McBuilds.Migrations.csproj", "{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5020A5AA-C626-440D-9A54-F45891ACB342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5020A5AA-C626-440D-9A54-F45891ACB342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5020A5AA-C626-440D-9A54-F45891ACB342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

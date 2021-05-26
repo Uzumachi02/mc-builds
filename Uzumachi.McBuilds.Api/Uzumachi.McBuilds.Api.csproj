@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Uzumachi.McBuilds.Data\Uzumachi.McBuilds.Data.csproj" />
+    <ProjectReference Include="..\Uzumachi.McBuilds.Migrations\Uzumachi.McBuilds.Migrations.csproj" />
   </ItemGroup>
 
 </Project>
