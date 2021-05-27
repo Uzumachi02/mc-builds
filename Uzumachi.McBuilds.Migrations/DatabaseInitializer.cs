@@ -14,7 +14,7 @@ namespace Uzumachi.McBuilds.Migrations {
 
       var upgrader = 
         DeployChanges.To
-          .PostgresqlDatabase(configuration.GetConnectionString("PostgresConnection"))
+          .PostgresqlDatabase(configuration.GetConnectionString("DefaultConnection"))
           .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
           .LogToConsole()
           .Build();

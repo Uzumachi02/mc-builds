@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Npgsql;
+using System.Data;
 using Uzumachi.McBuilds.Data;
 using Uzumachi.McBuilds.Data.Interfaces;
 
@@ -25,9 +27,9 @@ namespace Uzumachi.McBuilds.Api {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Uzumachi.McBuilds.Api", Version = "v1" });
       });
 
-      services.AddScoped<ISqlConnection>(
-        (sp) => new PostgresConnection(_configuration.GetConnectionString(nameof(PostgresConnection)))
-      );
+      Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+      var connectionString = _configuration.GetConnectionString("DefaultConnection");
+      services.AddTransient<IDbConnection>(_ => new NpgsqlConnection(connectionString));
       services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
