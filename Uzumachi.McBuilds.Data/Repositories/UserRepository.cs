@@ -17,13 +17,13 @@ namespace Uzumachi.McBuilds.Data.Repositories {
 
 
     public async Task<IEnumerable<UserEntity>> GetAll() {
-      var sql = "SELECT * FROM public.users ORDER BY ID";
+      var sql = $"SELECT * FROM {UserEntity.TABLE} ORDER BY ID";
 
       return await _dbConnection.QueryAsync<UserEntity>(sql);
     }
 
     public async ValueTask<UserEntity> GetById(int id) {
-      var sql = "SELECT * FROM public.users WHERE id = @id";
+      var sql = $"SELECT * FROM {UserEntity.TABLE} WHERE id = @id";
 
       return await _dbConnection.QueryFirstOrDefaultAsync<UserEntity>(sql, new { id });
     }

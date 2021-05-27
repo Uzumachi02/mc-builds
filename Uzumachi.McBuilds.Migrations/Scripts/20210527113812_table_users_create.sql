@@ -1,4 +1,4 @@
-CREATE TABLE "public"."users" (
+CREATE TABLE IF NOT EXISTS "public"."users" (
   "id" serial4,
   "username" varchar,
   "email" varchar NOT NULL,
