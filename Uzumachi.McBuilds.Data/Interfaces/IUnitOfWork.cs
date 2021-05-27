@@ -5,5 +5,7 @@ namespace Uzumachi.McBuilds.Data.Interfaces {
   public interface IUnitOfWork {
 
     IUserRepository Users { get; }
+
+    IPostRepository Posts { get; }
   }
 }
