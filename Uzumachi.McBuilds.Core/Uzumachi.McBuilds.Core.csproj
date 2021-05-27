@@ -6,7 +6,10 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
-    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Uzumachi.McBuilds.Data\Uzumachi.McBuilds.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using System.Data;
+using Uzumachi.McBuilds.Core.Services;
+using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Data;
 using Uzumachi.McBuilds.Data.Interfaces;
 
@@ -31,6 +33,8 @@ namespace Uzumachi.McBuilds.Api {
       var connectionString = _configuration.GetConnectionString("DefaultConnection");
       services.AddTransient<IDbConnection>(_ => new NpgsqlConnection(connectionString));
       services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+      services.AddScoped<IPostsService, PostsService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

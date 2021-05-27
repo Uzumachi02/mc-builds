@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Uzumachi.McBuilds.Data\Uzumachi.McBuilds.Data.csproj" />
+    <ProjectReference Include="..\Uzumachi.McBuilds.Core\Uzumachi.McBuilds.Core.csproj" />
     <ProjectReference Include="..\Uzumachi.McBuilds.Migrations\Uzumachi.McBuilds.Migrations.csproj" />
   </ItemGroup>
 
