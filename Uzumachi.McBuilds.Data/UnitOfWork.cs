@@ -14,11 +14,14 @@ namespace Uzumachi.McBuilds.Data {
 
     private IPostRepository _posts;
 
+    public ILikeRepository _likes;
+
 
     public IUserRepository Users => _users ??= new UserRepository(_dbConnection);
 
     public IPostRepository Posts => _posts ??= new PostRepository(_dbConnection);
 
+    public ILikeRepository Likes => _likes ??= new LikeRepository(_dbConnection);
 
     public UnitOfWork(IDbConnection dbConnection) {
       _dbConnection = dbConnection;

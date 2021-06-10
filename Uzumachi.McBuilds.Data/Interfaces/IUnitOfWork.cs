@@ -7,5 +7,7 @@ namespace Uzumachi.McBuilds.Data.Interfaces {
     IUserRepository Users { get; }
 
     IPostRepository Posts { get; }
+
+    ILikeRepository Likes { get; }
   }
 }
