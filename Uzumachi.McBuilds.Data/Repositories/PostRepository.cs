@@ -37,5 +37,23 @@ namespace Uzumachi.McBuilds.Data.Repositories {
 
       return resId;
     }
+
+    public async ValueTask<int> IncrementLikeForPost(int postID) {
+      var sqlQuery = $"UPDATE {PostEntity.TABLE} SET like_count = like_count + 1 WHERE id = @postID RETURNING like_count;";
+
+      return await _dbConnection.ExecuteScalarAsync<int>(sqlQuery, new { postID });
+    }
+
+    public async ValueTask<int> DecrementLikeForPost(int postID) {
+      var sqlQuery = $"UPDATE {PostEntity.TABLE} SET like_count = like_count - 1 WHERE id = @postID RETURNING like_count;";
+
+      return await _dbConnection.ExecuteScalarAsync<int>(sqlQuery, new { postID });
+    }
+
+    public Task<PostEntity> GetByIdForUser(int id, int userId) {
+      var sql = $"SELECT * FROM {PostEntity.TABLE} WHERE id = @id AND user_id = @userId AND is_deleted = false LIMIT 1";
+
+      return _dbConnection.QueryFirstOrDefaultAsync<PostEntity>(sql, new { id, userId });
+    }
   }
 }

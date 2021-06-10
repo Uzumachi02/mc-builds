@@ -6,7 +6,7 @@ using Uzumachi.McBuilds.Data.Interfaces;
 
 namespace Uzumachi.McBuilds.Core.Services {
 
-  public class PostsService: IPostsService {
+  public class PostsService : IPostsService {
 
     private readonly IUnitOfWork _unitOfWork;
 

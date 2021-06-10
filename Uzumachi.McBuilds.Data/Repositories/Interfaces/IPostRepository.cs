@@ -11,5 +11,11 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
     ValueTask<PostEntity> GetById(int id);
 
     ValueTask<int> AddPostAsync(PostEntity newPost);
+
+    ValueTask<int> IncrementLikeForPost(int postID);
+
+    ValueTask<int> DecrementLikeForPost(int postID);
+
+    Task<PostEntity> GetByIdForUser(int id, int userId);
   }
 }

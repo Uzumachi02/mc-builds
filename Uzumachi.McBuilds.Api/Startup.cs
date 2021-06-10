@@ -31,10 +31,14 @@ namespace Uzumachi.McBuilds.Api {
 
       Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
       var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+      // dependency injection
       services.AddTransient<IDbConnection>(_ => new NpgsqlConnection(connectionString));
       services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+      // injection services
       services.AddScoped<IPostsService, PostsService>();
+      services.AddScoped<ILikesService, LikesService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
