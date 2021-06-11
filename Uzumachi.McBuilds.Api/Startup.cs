@@ -11,6 +11,7 @@ using Uzumachi.McBuilds.Core.Services;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Data;
 using Uzumachi.McBuilds.Data.Interfaces;
+using Uzumachi.McBuilds.Core.Mappings;
 
 namespace Uzumachi.McBuilds.Api {
 
@@ -39,6 +40,7 @@ namespace Uzumachi.McBuilds.Api {
       // dependency injection
       services.AddTransient<IDbConnection>(_ => new NpgsqlConnection(connectionString));
       services.AddScoped<IUnitOfWork, UnitOfWork>();
+      services.AddAutoMapper(typeof(AssemblyMappingProfile));
 
       // injection services
       services.AddScoped<IPostsService, PostsService>();
