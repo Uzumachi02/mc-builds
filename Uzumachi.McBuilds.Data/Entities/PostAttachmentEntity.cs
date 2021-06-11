@@ -16,6 +16,8 @@ namespace Uzumachi.McBuilds.Data.Entities {
 
     public string Value { get; set; }
 
+    public int Priority { get; set; }
+
     public string Params { get; set; }
 
     public bool IsDeleted { get; set; }

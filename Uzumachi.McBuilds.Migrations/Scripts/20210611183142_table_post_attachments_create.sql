@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS "public"."post_attachments" (
   "post_id" int4 NOT NULL,
   "value" varchar NOT NULL,
   "params" json,
+  "priority" int4 DEFAULT 0,
   "is_deleted" bool DEFAULT false,
   "create_date" timestamp DEFAULT now(),
   "delete_date" timestamp,
