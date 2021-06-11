@@ -1,4 +1,5 @@
-﻿using Uzumachi.McBuilds.Data.Repositories.Interfaces;
+﻿using System.Data;
+using Uzumachi.McBuilds.Data.Repositories.Interfaces;
 
 namespace Uzumachi.McBuilds.Data.Interfaces {
 
@@ -8,6 +9,10 @@ namespace Uzumachi.McBuilds.Data.Interfaces {
 
     IPostRepository Posts { get; }
 
+    IPostAttachmentRepository PostAttachments { get; }
+
     ILikeRepository Likes { get; }
+
+    IDbTransaction BeginTransaction();
   }
 }
