@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Uzumachi.McBuilds.Core.Exceptions;
 using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Data.Entities;
@@ -15,11 +16,8 @@ namespace Uzumachi.McBuilds.Core.Services {
       (_unitOfWork) = (unitOfWork);
 
     public async Task<LikeResponseModel> LikePostAsync(LikeRequestModel req) {
-      var post = await _unitOfWork.Posts.GetByIdForUser(req.ItemId, req.UserId);
-
-      if( post is null ) {
-        throw new Exception("Post not found");
-      }
+      var post = await _unitOfWork.Posts.GetById(req.ItemId)
+        ?? throw new NotFoundCoreException("Post", req.ItemId);
 
       var response = new LikeResponseModel {
         Likes = post.LikeCount
@@ -48,11 +46,8 @@ namespace Uzumachi.McBuilds.Core.Services {
     }
 
     public async Task<LikeResponseModel> DeleteLikePostAsync(LikeRequestModel req) {
-      var post = await _unitOfWork.Posts.GetByIdForUser(req.ItemId, req.UserId);
-
-      if( post is null ) {
-        throw new Exception("Post not found");
-      }
+      var post = await _unitOfWork.Posts.GetById(req.ItemId)
+        ?? throw new NotFoundCoreException("Post", req.ItemId);
 
       var response = new LikeResponseModel {
         Likes = post.LikeCount

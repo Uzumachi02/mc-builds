@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using System.Data;
+using Uzumachi.McBuilds.Api.Filters;
 using Uzumachi.McBuilds.Core.Services;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Data;
@@ -24,7 +25,10 @@ namespace Uzumachi.McBuilds.Api {
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
 
-      services.AddControllers();
+      services.AddControllers(options => {
+        options.Filters.Add<ApiExceptionFilterAttribute>();
+      });
+
       services.AddSwaggerGen(c => {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Uzumachi.McBuilds.Api", Version = "v1" });
       });

@@ -23,7 +23,7 @@ namespace Uzumachi.McBuilds.Data.Repositories {
     }
 
     public async ValueTask<PostEntity> GetById(int id) {
-      var sql = $"SELECT * FROM {PostEntity.TABLE} WHERE id = @id";
+      var sql = $"SELECT * FROM {PostEntity.TABLE} WHERE id = @id AND is_deleted = false LIMIT 1;";
 
       return await _dbConnection.QueryFirstOrDefaultAsync<PostEntity>(sql, new { id });
     }
