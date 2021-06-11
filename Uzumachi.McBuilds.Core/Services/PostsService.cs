@@ -14,12 +14,16 @@ namespace Uzumachi.McBuilds.Core.Services {
       _unitOfWork = unitOfWork;
     }
 
-    public async Task<PostModel> CreateAsync(PostForCreationModel post) {
+    public async Task<PostModel> CreateAsync(CreatePostModel post) {
 
       var newPost = new PostEntity {
-        UserId = 1,
-        Description = post.Description
+        Text = post.Text,
+        CloseComments = post.CloseComments
       };
+
+      if( post.PublishDate.HasValue ) {
+        newPost.PublishDate = post.PublishDate.Value;
+      }
 
       await _unitOfWork.Posts.AddPostAsync(newPost);
 

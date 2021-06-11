@@ -5,6 +5,6 @@ namespace Uzumachi.McBuilds.Core.Services.Interfaces {
 
   public interface IPostsService {
 
-    Task<PostModel> CreateAsync(PostForCreationModel post);
+    Task<PostModel> CreateAsync(CreatePostModel post);
   }
 }

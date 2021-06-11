@@ -23,14 +23,14 @@ namespace Uzumachi.McBuilds.Data.Repositories {
     }
 
     public async ValueTask<PostEntity> GetById(int id) {
-      var sql = $"SELECT * FROM {PostEntity.TABLE} WHERE id = @id AND is_deleted = false LIMIT 1;";
+      var sql = $"SELECT * FROM {PostEntity.TABLE} WHERE id = @id AND is_banned = false AND is_deleted = false LIMIT 1;";
 
       return await _dbConnection.QueryFirstOrDefaultAsync<PostEntity>(sql, new { id });
     }
 
     public async ValueTask<int> AddPostAsync(PostEntity newPost) {
 
-      var sql = $"INSERT INTO {PostEntity.TABLE} (user_id, description) VALUES (@UserId, @Description) RETURNING ID;";
+      var sql = $"INSERT INTO {PostEntity.TABLE} (user_id, text, close_comments) VALUES (@UserId, @Text, @CloseComments) RETURNING ID;";
       var resId = await _dbConnection.QueryFirstAsync<int>(sql, newPost);
 
       newPost.Id = resId;
@@ -51,7 +51,7 @@ namespace Uzumachi.McBuilds.Data.Repositories {
     }
 
     public Task<PostEntity> GetByIdForUser(int id, int userId) {
-      var sql = $"SELECT * FROM {PostEntity.TABLE} WHERE id = @id AND user_id = @userId AND is_deleted = false LIMIT 1";
+      var sql = $"SELECT * FROM {PostEntity.TABLE} WHERE id = @id AND user_id = @userId AND is_banned = false AND is_deleted = false LIMIT 1";
 
       return _dbConnection.QueryFirstOrDefaultAsync<PostEntity>(sql, new { id, userId });
     }

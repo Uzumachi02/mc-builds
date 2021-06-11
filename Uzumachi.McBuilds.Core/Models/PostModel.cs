@@ -9,13 +9,17 @@ namespace Uzumachi.McBuilds.Core.Models {
 
     public int UserId { get; set; }
 
-    public string Description { get; set; }
+    public string Text { get; set; }
+
+    public bool CloseComments { get; set; }
 
     public int ViewCount { get; set; }
 
     public int LikeCount { get; set; }
 
     public int CommentCount { get; set; }
+
+    public bool IsBanned { get; set; }
 
     public bool IsDeleted { get; set; }
 
@@ -29,7 +33,8 @@ namespace Uzumachi.McBuilds.Core.Models {
     public PostModel(PostEntity postEntity) {
       Id = postEntity.Id;
       UserId = postEntity.UserId;
-      Description = postEntity.Description;
+      Text = postEntity.Text;
+      CloseComments = postEntity.CloseComments;
     }
   }
 }

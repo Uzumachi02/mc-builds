@@ -32,8 +32,8 @@ namespace Uzumachi.McBuilds.Api.Controllers {
     }
 
     [HttpPost("[action]")]
-    public async Task<ActionResult<PostModel>> CreateAsync(PostForCreationModel post) {
-
+    public async Task<ActionResult<PostModel>> CreateAsync(CreatePostModel post) {
+      post.UserId = 1;
       var newPost = await _postsService.CreateAsync(post);
 
       return Ok(newPost);

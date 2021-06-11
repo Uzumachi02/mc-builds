@@ -6,7 +6,7 @@ namespace Uzumachi.McBuilds.Core.Models {
   /// <summary>
   /// Model for create post
   /// </summary>
-  public class PostForCreationModel {
+  public class CreatePostModel {
 
     /// <summary>
     /// user id
@@ -14,7 +14,9 @@ namespace Uzumachi.McBuilds.Core.Models {
     public int UserId { get; set; }
 
     [MinLength(5)]
-    public string Description { get; set; }
+    public string Text { get; set; }
+
+    public bool CloseComments { get; set; }
 
     public DateTime? PublishDate { get; set; }
   }

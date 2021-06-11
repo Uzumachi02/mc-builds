@@ -10,13 +10,17 @@ namespace Uzumachi.McBuilds.Data.Entities {
 
     public int UserId { get; set; }
 
-    public string Description { get; set; }
+    public string Text { get; set; }
+
+    public bool CloseComments { get; set; }
 
     public int ViewCount { get; set; }
 
     public int LikeCount { get; set; }
 
     public int CommentCount { get; set; }
+
+    public bool IsBanned { get; set; }
 
     public bool IsDeleted { get; set; }
 
