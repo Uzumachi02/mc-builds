@@ -30,6 +30,7 @@ namespace Uzumachi.McBuilds.Api.Filters {
         _exceptionHandlers[type].Invoke(context);
         return;
       }
+      return;
 
       if( !context.ModelState.IsValid ) {
         HandleInvalidModelStateException(context);

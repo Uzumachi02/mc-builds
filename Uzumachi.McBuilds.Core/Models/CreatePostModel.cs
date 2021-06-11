@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Uzumachi.McBuilds.Core.Models {
 
@@ -13,11 +13,12 @@ namespace Uzumachi.McBuilds.Core.Models {
     /// </summary>
     public int UserId { get; set; }
 
-    [MinLength(5)]
     public string Text { get; set; }
 
     public bool CloseComments { get; set; }
 
     public DateTime? PublishDate { get; set; }
+
+    public List<AttachmentModel> Attachments { get; set; }
   }
 }

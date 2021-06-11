@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using Uzumachi.McBuilds.Data.Entities;
@@ -28,10 +29,12 @@ namespace Uzumachi.McBuilds.Data.Repositories {
       return await _dbConnection.QueryFirstOrDefaultAsync<PostEntity>(sql, new { id });
     }
 
-    public async ValueTask<int> AddPostAsync(PostEntity newPost) {
+    public async ValueTask<int> AddPostAsync(PostEntity newPost, CancellationToken token, IDbTransaction transaction = null) {
 
       var sql = $"INSERT INTO {PostEntity.TABLE} (user_id, text, close_comments) VALUES (@UserId, @Text, @CloseComments) RETURNING ID;";
-      var resId = await _dbConnection.QueryFirstAsync<int>(sql, newPost);
+      var resId = await _dbConnection.QueryFirstAsync<int>(
+        new CommandDefinition(sql, newPost, transaction, cancellationToken: token)
+      );
 
       newPost.Id = resId;
 

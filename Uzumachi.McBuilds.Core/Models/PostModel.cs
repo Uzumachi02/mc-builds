@@ -1,9 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using Uzumachi.McBuilds.Core.Mappings;
 using Uzumachi.McBuilds.Data.Entities;
 
 namespace Uzumachi.McBuilds.Core.Models {
 
-  public class PostModel {
+  public class PostModel : IMapFrom<PostEntity> {
 
     public int Id { get; set; }
 
@@ -29,6 +32,9 @@ namespace Uzumachi.McBuilds.Core.Models {
 
     public DateTime UpdateDate { get; set; }
 
+    public List<AttachmentModel> Attachments { get; set; }
+
+    public PostModel() { }
 
     public PostModel(PostEntity postEntity) {
       Id = postEntity.Id;

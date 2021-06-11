@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Data.Entities;
 
@@ -10,7 +12,7 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
 
     ValueTask<PostEntity> GetById(int id);
 
-    ValueTask<int> AddPostAsync(PostEntity newPost);
+    ValueTask<int> AddPostAsync(PostEntity newPost, CancellationToken token, IDbTransaction transaction = null);
 
     ValueTask<int> IncrementLikeForPost(int postID);
 
