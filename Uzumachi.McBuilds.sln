@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uzumachi.McBuilds.Api", "Uzumachi.McBuilds.Api\Uzumachi.McBuilds.Api.csproj", "{B028FF8D-BB65-4B9A-B2E8-AB4F08F6896D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uzumachi.McBuilds.Core", "Uzumachi.McBuilds.Core\Uzumachi.McBuilds.Core.csproj", "{56134C2E-ECF8-4B9D-8A18-CD4EE1ABC5EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uzumachi.McBuilds.Core", "Uzumachi.McBuilds.Core\Uzumachi.McBuilds.Core.csproj", "{56134C2E-ECF8-4B9D-8A18-CD4EE1ABC5EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uzumachi.McBuilds.Data", "Uzumachi.McBuilds.Data\Uzumachi.McBuilds.Data.csproj", "{5020A5AA-C626-440D-9A54-F45891ACB342}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uzumachi.McBuilds.Data", "Uzumachi.McBuilds.Data\Uzumachi.McBuilds.Data.csproj", "{5020A5AA-C626-440D-9A54-F45891ACB342}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uzumachi.McBuilds.Migrations", "Uzumachi.McBuilds.Migrations\Uzumachi.McBuilds.Migrations.csproj", "{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uzumachi.McBuilds.Migrations", "Uzumachi.McBuilds.Migrations\Uzumachi.McBuilds.Migrations.csproj", "{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uzumachi.McBuilds.Domain", "Uzumachi.McBuilds.Domain\Uzumachi.McBuilds.Domain.csproj", "{128E3838-9930-4C2E-B844-B18C09E6B88D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3510A3D1-9D37-4B33-9FE1-4A30985E13D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{128E3838-9930-4C2E-B844-B18C09E6B88D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{128E3838-9930-4C2E-B844-B18C09E6B88D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{128E3838-9930-4C2E-B844-B18C09E6B88D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{128E3838-9930-4C2E-B844-B18C09E6B88D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
