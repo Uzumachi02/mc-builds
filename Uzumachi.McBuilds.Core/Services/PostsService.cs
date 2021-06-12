@@ -1,24 +1,24 @@
-﻿using AutoMapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Uzumachi.McBuilds.Core.Mappers;
 using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
-using Uzumachi.McBuilds.Data.Entities;
 using Uzumachi.McBuilds.Data.Interfaces;
+using Uzumachi.McBuilds.Domain.Dtos;
+using Uzumachi.McBuilds.Domain.Entities;
 
 namespace Uzumachi.McBuilds.Core.Services {
 
   public class PostsService : IPostsService {
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
-    public PostsService(IUnitOfWork unitOfWork, IMapper mapper) =>
-      (_unitOfWork, _mapper) = (unitOfWork, mapper);
+    public PostsService(IUnitOfWork unitOfWork) =>
+      _unitOfWork = unitOfWork;
 
-    public async Task<PostModel> CreateAsync(CreatePostModel post, CancellationToken token) {
+    public async Task<PostDto> CreateAsync(PostCreateModel post, CancellationToken token) {
 
       var newPost = new PostEntity {
         Text = post.Text,
@@ -37,14 +37,12 @@ namespace Uzumachi.McBuilds.Core.Services {
 
       if( post.Attachments is not null && post.Attachments.Count > 0 ) {
         foreach( var attachment in post.Attachments.OrderBy(x => x.Priority).Take(10) ) {
-          var attachmentTypeId = AttachmentTypes.Parse(attachment.Type);
-
-          if( attachmentTypeId == 0 ) {
+          if( attachment.AttachmentTypeId == 0 ) {
             continue;
           }
 
           attachments.Add(new PostAttachmentEntity {
-            AttachmentTypeId = attachmentTypeId,
+            AttachmentTypeId = attachment.AttachmentTypeId,
             UserId = newPost.UserId,
             PostId = newPost.Id,
             Value = attachment.Value,
@@ -61,9 +59,9 @@ namespace Uzumachi.McBuilds.Core.Services {
       transaction.Commit();
 
       var postAttachments = await _unitOfWork.PostAttachments.GetListForPost(newPost.Id);
+      var resPost = newPost.AdaptToPostDto();
 
-      var resPost = _mapper.Map<PostModel>(newPost);
-      resPost.Attachments = _mapper.Map<List<AttachmentModel>>(postAttachments);
+      resPost.Attachments = postAttachments.Select(a => a.AdaptToPostAttachmentDto()).ToArray();
 
       return resPost;
     }

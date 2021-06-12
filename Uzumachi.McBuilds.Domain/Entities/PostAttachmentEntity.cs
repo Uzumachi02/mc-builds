@@ -1,4 +1,5 @@
 ﻿using System;
+using Uzumachi.McBuilds.Domain.Types;
 
 namespace Uzumachi.McBuilds.Domain.Entities {
 
@@ -25,5 +26,8 @@ namespace Uzumachi.McBuilds.Domain.Entities {
     public DateTime CreateDate { get; set; }
 
     public DateTime DeleteDate { get; set; }
+
+
+    public string Type => AttachmentTypes.ToString(AttachmentTypeId);
   }
 }

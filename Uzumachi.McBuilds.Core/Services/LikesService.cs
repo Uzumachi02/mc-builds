@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Exceptions;
 using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
-using Uzumachi.McBuilds.Data.Entities;
+using Uzumachi.McBuilds.Domain.Entities;
+using Uzumachi.McBuilds.Domain.Types;
 using Uzumachi.McBuilds.Data.Interfaces;
 
 namespace Uzumachi.McBuilds.Core.Services {

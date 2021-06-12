@@ -5,8 +5,8 @@ namespace Uzumachi.McBuilds.Core.Models {
 
   /// <summary>
   /// Model for create post
-  /// </summary>
-  public class CreatePostModel {
+  /// </summary> 
+  public class PostCreateModel {
 
     /// <summary>
     /// user id
@@ -19,6 +19,6 @@ namespace Uzumachi.McBuilds.Core.Models {
 
     public DateTime? PublishDate { get; set; }
 
-    public List<AttachmentModel> Attachments { get; set; }
+    public List<PostAttachmentCreateModel> Attachments { get; set; }
   }
 }

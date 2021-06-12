@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Uzumachi.McBuilds.Data.Entities;
+using Uzumachi.McBuilds.Domain.Entities;
 
 namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
 

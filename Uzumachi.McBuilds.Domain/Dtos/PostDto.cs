@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace Uzumachi.McBuilds.Data.Entities {
+namespace Uzumachi.McBuilds.Domain.Dtos {
 
-  public class PostEntity {
-
-    public const string TABLE = "public.posts";
+  public class PostDto {
 
     public int Id { get; set; }
 
@@ -20,14 +19,12 @@ namespace Uzumachi.McBuilds.Data.Entities {
 
     public int CommentCount { get; set; }
 
-    public bool IsBanned { get; set; }
-
-    public bool IsDeleted { get; set; }
-
     public DateTime CreateDate { get; set; }
 
     public DateTime PublishDate { get; set; }
 
     public DateTime UpdateDate { get; set; }
+
+    public IEnumerable<PostAttachmentDto> Attachments { get; set; }
   }
 }

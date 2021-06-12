@@ -9,4 +9,8 @@
     <PackageReference Include="Npgsql" Version="5.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Uzumachi.McBuilds.Domain\Uzumachi.McBuilds.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

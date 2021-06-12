@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Uzumachi.McBuilds.Core.Mappings;
-using Uzumachi.McBuilds.Data.Entities;
+using Uzumachi.McBuilds.Domain.Entities;
 
 namespace Uzumachi.McBuilds.Core.Models {
 
@@ -32,7 +32,7 @@ namespace Uzumachi.McBuilds.Core.Models {
 
     public DateTime UpdateDate { get; set; }
 
-    public List<AttachmentModel> Attachments { get; set; }
+    //public List<AttachmentModel> Attachments { get; set; }
 
     public PostModel() { }
 

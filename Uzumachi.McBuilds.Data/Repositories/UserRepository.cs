@@ -2,7 +2,7 @@
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
-using Uzumachi.McBuilds.Data.Entities;
+using Uzumachi.McBuilds.Domain.Entities;
 using Uzumachi.McBuilds.Data.Repositories.Interfaces;
 
 namespace Uzumachi.McBuilds.Data.Repositories {
