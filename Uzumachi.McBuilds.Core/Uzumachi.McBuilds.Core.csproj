@@ -11,10 +11,23 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Mapster.Core" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Uzumachi.McBuilds.Data\Uzumachi.McBuilds.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Generated Include="**\*.g.cs" />
+  </ItemGroup>
+
+  <Target Name="CleanGenerated">
+    <Delete Files="@(Generated)" />
+  </Target>
+
+  <Target Name="Mapster" AfterTargets="AfterBuild">
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -o Mappers -n Uzumachi.McBuilds.Core.Mappers" />
+  </Target>
 </Project>
