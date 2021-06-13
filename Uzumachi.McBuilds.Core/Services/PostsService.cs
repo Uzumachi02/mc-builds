@@ -65,6 +65,7 @@ namespace Uzumachi.McBuilds.Core.Services {
     public async Task<PostDto> CreateAsync(PostCreateModel post, CancellationToken token) {
 
       var newPost = new PostEntity {
+        UserId = post.UserId,
         Text = post.Text,
         CloseComments = post.CloseComments
       };
@@ -130,6 +131,49 @@ namespace Uzumachi.McBuilds.Core.Services {
       }
 
       return await _unitOfWork.Posts.RestoreAsync(req.ItemId);
+    }
+
+    public async Task<int> UpdateAsync(PostUpdateModel post, CancellationToken token) {
+      var dbPost = await _unitOfWork.Posts.GetById(post.Id)
+        ?? throw new NotFoundCoreException("Post", post.Id);
+
+      if( dbPost.UserId != post.UserId ) {
+        throw new ForbiddenAccessCoreException();
+      }
+
+      dbPost.Text = post.Text;
+      dbPost.CloseComments = post.CloseComments;
+
+      using var transaction = _unitOfWork.BeginTransaction();
+
+      await _unitOfWork.Posts.UpdateAsync(dbPost, token, transaction);
+      await _unitOfWork.PostAttachments.DeleteByPostIdAsync(dbPost.Id, token, transaction);
+
+      var attachments = new List<PostAttachmentEntity>();
+
+      if( post.Attachments is not null && post.Attachments.Count > 0 ) {
+        foreach( var attachment in post.Attachments.OrderBy(x => x.Priority).Take(10) ) {
+          if( attachment.AttachmentTypeId == 0 ) {
+            continue;
+          }
+
+          attachments.Add(new PostAttachmentEntity {
+            AttachmentTypeId = attachment.AttachmentTypeId,
+            UserId = dbPost.UserId,
+            PostId = dbPost.Id,
+            Value = attachment.Value,
+            Priority = attachment.Priority
+          });
+        }
+      }
+
+      if( attachments.Count > 0 ) {
+        await _unitOfWork.PostAttachments.AddAsync(attachments, token, transaction);
+      }
+
+      transaction.Commit();
+
+      return dbPost.Id;
     }
   }
 }

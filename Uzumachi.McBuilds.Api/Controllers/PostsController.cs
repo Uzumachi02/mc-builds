@@ -43,6 +43,17 @@ namespace Uzumachi.McBuilds.Api.Controllers {
       return Ok(newPost);
     }
 
+    [HttpPut("{id}")]
+    public async Task<ActionResult<int>> UpdateAsync(int id, PostUpdateRequest req, CancellationToken token) {
+      var postModel = req.AdaptToPostUpdateModel();
+      postModel.Id = id;
+      postModel.UserId = 1;
+
+      var res = await _postsService.UpdateAsync(postModel, token);
+
+      return Ok(res);
+    }
+
     [HttpDelete("{id}")]
     public async Task<ActionResult<int>> DeleteAsync(int id) {
       var req = new DeleteModel { UserId = 1, ItemId = id };

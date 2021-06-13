@@ -15,6 +15,10 @@ namespace Uzumachi.McBuilds.Core {
         .ForType<PostCreateRequest>()
         .ForType<PostCreateModel>();
 
+      config.AdaptFrom(nameof(PostUpdateRequest))
+        .ForType<PostUpdateRequest>()
+        .ForType<PostUpdateModel>();
+
       config.AdaptFrom(nameof(PostEntity))
         .ForType<PostEntity>()
         .ForType<PostDto>();
@@ -29,6 +33,7 @@ namespace Uzumachi.McBuilds.Core {
 
       config.GenerateMapper("[name]Mapper")
         .ForType<PostCreateModel>()
+        .ForType<PostUpdateModel>()
         .ForType<PostDto>()
         .ForType<PostAttachmentDto>()
         .ForType<PostFilters>();

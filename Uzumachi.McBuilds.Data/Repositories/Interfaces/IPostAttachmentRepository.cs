@@ -11,5 +11,7 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
     Task<int> AddAsync(IEnumerable<PostAttachmentEntity> postAttachments, CancellationToken token, IDbTransaction transaction = null);
 
     Task<IEnumerable<PostAttachmentEntity>> GetListForPost(int postId, int limit = 10);
+
+    Task<int> DeleteByPostIdAsync(int postId, CancellationToken token, IDbTransaction transaction = null);
   }
 }

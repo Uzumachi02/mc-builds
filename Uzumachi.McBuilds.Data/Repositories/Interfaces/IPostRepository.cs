@@ -30,5 +30,7 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
     Task<int> DeleteAsync(int id);
 
     Task<int> RestoreAsync(int id);
+
+    Task<int> UpdateAsync(PostEntity post, CancellationToken token, IDbTransaction transaction = null);
   }
 }

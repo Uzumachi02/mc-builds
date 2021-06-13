@@ -98,5 +98,13 @@ namespace Uzumachi.McBuilds.Data.Repositories {
 
       return await _dbConnection.ExecuteAsync(sqlQuery, new { id });
     }
+
+    public async Task<int> UpdateAsync(PostEntity post, CancellationToken token, IDbTransaction transaction = null) {
+      var sqlQuery = $"UPDATE {PostEntity.TABLE} SET text = @Text, close_comments = @CloseComments, update_date = now() WHERE id = @Id;";
+
+      return await _dbConnection.ExecuteAsync(
+        new CommandDefinition(sqlQuery, post, transaction, cancellationToken: token)
+      );
+    }
   }
 }

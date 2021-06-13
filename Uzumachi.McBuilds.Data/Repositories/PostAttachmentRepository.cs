@@ -26,6 +26,12 @@ namespace Uzumachi.McBuilds.Data.Repositories {
       );
     }
 
+    public async Task<int> DeleteByPostIdAsync(int postId, CancellationToken token, IDbTransaction transaction = null) {
+      var sqlQuery = $"UPDATE {PostAttachmentEntity.TABLE} SET is_deleted = true, delete_date = now() WHERE post_id = @postId;";
+
+      return await _dbConnection.ExecuteAsync(sqlQuery, new { postId });
+    }
+
     public async Task<IEnumerable<PostAttachmentEntity>> GetListForPost(int postId, int limit = 10) {
       var sql = $"SELECT * FROM {PostAttachmentEntity.TABLE} WHERE post_id = @postId AND is_deleted = false ORDER BY priority, id LIMIT {limit};";
 
