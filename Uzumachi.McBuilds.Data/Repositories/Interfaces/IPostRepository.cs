@@ -25,6 +25,10 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
 
     Task<PostEntity> GetByIdForUser(int id, int userId);
 
+    Task<PostEntity> GetToRestore(int id);
+
     Task<int> DeleteAsync(int id);
+
+    Task<int> RestoreAsync(int id);
   }
 }

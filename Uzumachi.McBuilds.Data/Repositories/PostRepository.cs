@@ -85,5 +85,18 @@ namespace Uzumachi.McBuilds.Data.Repositories {
 
       return await _dbConnection.ExecuteAsync(sqlQuery, new { id });
     }
+
+    public async Task<PostEntity> GetToRestore(int id) {
+      var sqlQuery = $"SELECT id, user_id, update_date FROM {PostEntity.TABLE} " +
+        "WHERE id = @id AND is_banned = false AND is_deleted = true LIMIT 1;";
+
+      return await _dbConnection.QueryFirstOrDefaultAsync<PostEntity>(sqlQuery, new { id });
+    }
+
+    public async Task<int> RestoreAsync(int id) {
+      var sqlQuery = $"UPDATE {PostEntity.TABLE} SET is_deleted = false, update_date = now() WHERE id = @id;";
+
+      return await _dbConnection.ExecuteAsync(sqlQuery, new { id });
+    }
   }
 }

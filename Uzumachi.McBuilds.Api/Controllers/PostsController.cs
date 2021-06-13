@@ -33,7 +33,7 @@ namespace Uzumachi.McBuilds.Api.Controllers {
       return Ok(post);
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     public async Task<ActionResult<PostDto>> CreateAsync(PostCreateRequest req, CancellationToken token) {
       var postModel = req.AdaptToPostCreateModel();
       postModel.UserId = 1;
@@ -48,6 +48,15 @@ namespace Uzumachi.McBuilds.Api.Controllers {
       var req = new DeleteModel { UserId = 1, ItemId = id };
 
       var res = await _postsService.DeleteAsync(req);
+
+      return Ok(res);
+    }
+
+    [HttpPatch("[action]/{id}")]
+    public async Task<ActionResult<int>> RestoreAsync(int id) {
+      var req = new RestoreModel { UserId = 1, ItemId = id };
+
+      int res = await _postsService.RestoreAsync(req);
 
       return Ok(res);
     }

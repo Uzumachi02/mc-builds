@@ -120,5 +120,16 @@ namespace Uzumachi.McBuilds.Core.Services {
 
       return await _unitOfWork.Posts.DeleteAsync(req.ItemId);
     }
+
+    public async Task<int> RestoreAsync(RestoreModel req) {
+      var dbPost = await _unitOfWork.Posts.GetToRestore(req.ItemId)
+        ?? throw new NotFoundCoreException("Post", req.ItemId);
+
+      if( dbPost.UserId != req.UserId ) {
+        throw new ForbiddenAccessCoreException();
+      }
+
+      return await _unitOfWork.Posts.RestoreAsync(req.ItemId);
+    }
   }
 }
