@@ -12,6 +12,10 @@ using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Data;
 using Uzumachi.McBuilds.Data.Interfaces;
 using Uzumachi.McBuilds.Core.Mappings;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using System.Reflection;
+using System.Globalization;
 
 namespace Uzumachi.McBuilds.Api {
 
@@ -28,7 +32,12 @@ namespace Uzumachi.McBuilds.Api {
 
       services.AddControllers(options => {
         options.Filters.Add<ApiExceptionFilterAttribute>();
+      }).AddFluentValidation(fv => {
+        fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        fv.DisableDataAnnotationsValidation = true;
       });
+
+      ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("ru");
 
       services.AddSwaggerGen(c => {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Uzumachi.McBuilds.Api", Version = "v1" });
