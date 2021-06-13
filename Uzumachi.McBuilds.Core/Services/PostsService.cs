@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Uzumachi.McBuilds.Core.Exceptions;
 using Uzumachi.McBuilds.Core.Mappers;
 using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Data.Interfaces;
 using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Entities;
+using Uzumachi.McBuilds.Domain.Requests;
 
 namespace Uzumachi.McBuilds.Core.Services {
 
@@ -17,6 +19,34 @@ namespace Uzumachi.McBuilds.Core.Services {
 
     public PostsService(IUnitOfWork unitOfWork) =>
       _unitOfWork = unitOfWork;
+
+
+    public async Task<PostDto> GetByIdAsync(int id, PostGetRequest req) {
+      var dbPost = await _unitOfWork.Posts.GetById(id)
+        ?? throw new NotFoundCoreException("Post", id);
+
+      var post = dbPost.AdaptToPostDto();
+
+      if( req.Extendet > 0 ) {
+        var postAttachments = await _unitOfWork.PostAttachments.GetListForPost(id);
+
+        post.Attachments = postAttachments.Select(a => a.AdaptToPostAttachmentDto()).ToArray();
+      }
+
+      return post;
+    }
+
+    public async Task<IEnumerable<PostDto>> GetListAsync(PostListRequest req) {
+      var dbPosts = await _unitOfWork.Posts.GetAll();
+      var posts = dbPosts.Select(x => x.AdaptToPostDto()).ToArray();
+
+      foreach( var post in posts ) {
+        var postAttachments = await _unitOfWork.PostAttachments.GetListForPost(post.Id);
+        post.Attachments = postAttachments.Select(a => a.AdaptToPostAttachmentDto()).ToArray();
+      }
+
+      return posts;
+    }
 
     public async Task<PostDto> CreateAsync(PostCreateModel post, CancellationToken token) {
 
