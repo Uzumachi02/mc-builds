@@ -14,5 +14,7 @@ namespace Uzumachi.McBuilds.Core.Services.Interfaces {
     Task<ItemsResponse<PostDto>> GetListAsync(PostListRequest req);
 
     Task<PostDto> CreateAsync(PostCreateModel post, CancellationToken token);
+
+    Task<int> DeleteAsync(DeleteModel req);
   }
 }

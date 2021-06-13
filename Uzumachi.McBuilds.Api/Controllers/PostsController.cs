@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Mappers;
+using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Requests;
@@ -40,6 +41,15 @@ namespace Uzumachi.McBuilds.Api.Controllers {
       var newPost = await _postsService.CreateAsync(postModel, token);
 
       return Ok(newPost);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<int>> DeleteAsync(int id) {
+      var req = new DeleteModel { UserId = 1, ItemId = id };
+
+      var res = await _postsService.DeleteAsync(req);
+
+      return Ok(res);
     }
   }
 }

@@ -15,6 +15,7 @@ namespace Uzumachi.McBuilds.Api.Filters {
       // Register known exception types and handlers.
       _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>> {
         { typeof(NotFoundCoreException), HandleNotFoundException },
+        { typeof(ForbiddenAccessCoreException), HandleForbiddenAccessException },
       };
     }
 
@@ -60,6 +61,21 @@ namespace Uzumachi.McBuilds.Api.Filters {
       };
 
       context.Result = new NotFoundObjectResult(details);
+
+      context.ExceptionHandled = true;
+    }
+
+    private void HandleForbiddenAccessException(ExceptionContext context) {
+      var details = new ProblemDetails
+            {
+        Status = StatusCodes.Status403Forbidden,
+        Title = "Forbidden",
+        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
+      };
+
+      context.Result = new ObjectResult(details) {
+        StatusCode = StatusCodes.Status403Forbidden
+      };
 
       context.ExceptionHandled = true;
     }

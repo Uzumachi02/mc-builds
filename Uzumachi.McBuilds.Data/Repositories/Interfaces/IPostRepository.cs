@@ -24,5 +24,7 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
     ValueTask<int> DecrementLikeForPost(int postID);
 
     Task<PostEntity> GetByIdForUser(int id, int userId);
+
+    Task<int> DeleteAsync(int id);
   }
 }

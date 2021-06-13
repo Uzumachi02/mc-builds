@@ -79,5 +79,11 @@ namespace Uzumachi.McBuilds.Data.Repositories {
 
       return _dbConnection.QueryFirstOrDefaultAsync<PostEntity>(sql, new { id, userId });
     }
+
+    public async Task<int> DeleteAsync(int id) {
+      var sqlQuery = $"UPDATE {PostEntity.TABLE} SET is_deleted = true, update_date = now() WHERE id = @id;";
+
+      return await _dbConnection.ExecuteAsync(sqlQuery, new { id });
+    }
   }
 }
