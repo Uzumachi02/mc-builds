@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Dapper;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Dapper;
-using Uzumachi.McBuilds.Domain.Entities;
+using Uzumachi.McBuilds.Data.Filters;
 using Uzumachi.McBuilds.Data.Repositories.Interfaces;
+using Uzumachi.McBuilds.Domain.Entities;
 
 namespace Uzumachi.McBuilds.Data.Repositories {
 
@@ -21,6 +22,26 @@ namespace Uzumachi.McBuilds.Data.Repositories {
       var sql = $"SELECT * FROM {PostEntity.TABLE} ORDER BY ID";
 
       return await _dbConnection.QueryAsync<PostEntity>(sql);
+    }
+
+    public async Task<IEnumerable<PostEntity>> GetListAsync(PostFilters filters) {
+      var sql = $"SELECT * FROM {PostEntity.TABLE} AS base WHERE base.is_banned = false AND base.is_deleted = false";
+      var parameters = new DynamicParameters();
+
+      sql += filters.GetWhereSql(parameters, true);
+      sql += filters.GetOrderSql();
+      sql += filters.GetLimitSql();
+
+      return await _dbConnection.QueryAsync<PostEntity>(sql, parameters);
+    }
+
+    public async Task<int> GetListCountAsync(PostFilters filters) {
+      var sql = $"SELECT COUNT(*) FROM {PostEntity.TABLE} AS base WHERE base.is_banned = false AND base.is_deleted = false";
+      var parameters = new DynamicParameters();
+
+      sql += filters.GetWhereSql(parameters, true);
+
+      return await _dbConnection.ExecuteScalarAsync<int>(sql, parameters);
     }
 
     public async ValueTask<PostEntity> GetById(int id) {

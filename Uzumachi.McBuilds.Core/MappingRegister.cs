@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Uzumachi.McBuilds.Core.Models;
+using Uzumachi.McBuilds.Data.Filters;
 using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Entities;
 using Uzumachi.McBuilds.Domain.Requests;
@@ -22,10 +23,15 @@ namespace Uzumachi.McBuilds.Core {
        .ForType<PostAttachmentEntity>()
        .ForType<PostAttachmentDto>();
 
+      config.AdaptFrom(nameof(PostListRequest))
+       .ForType<PostListRequest>()
+       .ForType<PostFilters>();
+
       config.GenerateMapper("[name]Mapper")
         .ForType<PostCreateModel>()
         .ForType<PostDto>()
-        .ForType<PostAttachmentDto>();
+        .ForType<PostAttachmentDto>()
+        .ForType<PostFilters>();
     }
   }
 }

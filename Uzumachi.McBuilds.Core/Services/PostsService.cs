@@ -10,6 +10,7 @@ using Uzumachi.McBuilds.Data.Interfaces;
 using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Entities;
 using Uzumachi.McBuilds.Domain.Requests;
+using Uzumachi.McBuilds.Domain.Responses;
 
 namespace Uzumachi.McBuilds.Core.Services {
 
@@ -36,8 +37,20 @@ namespace Uzumachi.McBuilds.Core.Services {
       return post;
     }
 
-    public async Task<IEnumerable<PostDto>> GetListAsync(PostListRequest req) {
-      var dbPosts = await _unitOfWork.Posts.GetAll();
+    public async Task<ItemsResponse<PostDto>> GetListAsync(PostListRequest req) {
+      var filters = req.AdaptToPostFilters();
+      var countPosts = await _unitOfWork.Posts.GetListCountAsync(filters);
+
+      var result = new ItemsResponse<PostDto> {
+        Count = countPosts
+      };
+
+      if( countPosts == 0 ) {
+        result.Items = System.Array.Empty<PostDto>();
+        return result;
+      }
+
+      var dbPosts = await _unitOfWork.Posts.GetListAsync(filters);
       var posts = dbPosts.Select(x => x.AdaptToPostDto()).ToArray();
 
       foreach( var post in posts ) {
@@ -45,7 +58,8 @@ namespace Uzumachi.McBuilds.Core.Services {
         post.Attachments = postAttachments.Select(a => a.AdaptToPostAttachmentDto()).ToArray();
       }
 
-      return posts;
+      result.Items = posts;
+      return result;
     }
 
     public async Task<PostDto> CreateAsync(PostCreateModel post, CancellationToken token) {

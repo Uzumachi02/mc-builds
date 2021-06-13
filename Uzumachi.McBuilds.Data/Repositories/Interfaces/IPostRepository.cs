@@ -2,6 +2,7 @@
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Uzumachi.McBuilds.Data.Filters;
 using Uzumachi.McBuilds.Domain.Entities;
 
 namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
@@ -9,6 +10,10 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
   public interface IPostRepository {
 
     Task<IEnumerable<PostEntity>> GetAll();
+
+    Task<IEnumerable<PostEntity>> GetListAsync(PostFilters filters);
+
+    Task<int> GetListCountAsync(PostFilters filters);
 
     ValueTask<PostEntity> GetById(int id);
 

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Requests;
+using Uzumachi.McBuilds.Domain.Responses;
 
 namespace Uzumachi.McBuilds.Core.Services.Interfaces {
 
@@ -11,7 +11,7 @@ namespace Uzumachi.McBuilds.Core.Services.Interfaces {
 
     Task<PostDto> GetByIdAsync(int id, PostGetRequest req);
 
-    Task<IEnumerable<PostDto>> GetListAsync(PostListRequest req);
+    Task<ItemsResponse<PostDto>> GetListAsync(PostListRequest req);
 
     Task<PostDto> CreateAsync(PostCreateModel post, CancellationToken token);
   }
