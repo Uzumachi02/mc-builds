@@ -10,3 +10,4 @@ INSERT INTO "public"."item_types" ("id", "name") VALUES (1, 'User');
 INSERT INTO "public"."item_types" ("id", "name") VALUES (2, 'Post');
 INSERT INTO "public"."item_types" ("id", "name") VALUES (3, 'Like');
 INSERT INTO "public"."item_types" ("id", "name") VALUES (4, 'Attachment');
+INSERT INTO "public"."item_types" ("id", "name") VALUES (5, 'Comment');

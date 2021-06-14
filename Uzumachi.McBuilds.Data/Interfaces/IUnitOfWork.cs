@@ -13,6 +13,8 @@ namespace Uzumachi.McBuilds.Data.Interfaces {
 
     ILikeRepository Likes { get; }
 
+    ICommentRepository Comments { get; }
+
     IDbTransaction BeginTransaction();
   }
 }

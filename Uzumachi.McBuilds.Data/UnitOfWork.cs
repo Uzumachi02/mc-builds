@@ -17,6 +17,8 @@ namespace Uzumachi.McBuilds.Data {
 
     private ILikeRepository _likes;
 
+    private ICommentRepository _comments;
+
 
     public IUserRepository Users => _users ??= new UserRepository(_dbConnection);
 
@@ -25,6 +27,8 @@ namespace Uzumachi.McBuilds.Data {
     public IPostAttachmentRepository PostAttachments => _postAttachments ??= new PostAttachmentRepository(_dbConnection);
 
     public ILikeRepository Likes => _likes ??= new LikeRepository(_dbConnection);
+
+    public ICommentRepository Comments => _comments ??= new CommentRepository(_dbConnection);
 
     public UnitOfWork(IDbConnection dbConnection) {
       _dbConnection = dbConnection;
