@@ -9,6 +9,8 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
 
     Task<CommentEntity> GetByIdAsync(int id);
 
+    Task<CommentEntity> GetToRestoreAsync(int id, CancellationToken token = default);
+
     Task<int> GetTopParentIdByReplyIdAsync(int replyId);
 
     /// <returns>Id of new item.</returns>
@@ -19,6 +21,9 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
 
     /// <returns>The number of rows affected.</returns>
     Task<int> DeleteAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null);
+
+    /// <returns>The number of rows affected.</returns>
+    Task<int> RestoreAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null);
 
     /// <returns>Count replies.</returns>
     Task<int> IncrementRepliesAsync(int commentId, CancellationToken token, IDbTransaction transaction = null);

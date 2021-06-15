@@ -11,5 +11,7 @@ namespace Uzumachi.McBuilds.Core.Services.Interfaces {
     Task<int> UpdateAsync(CommentUpdateModel comment, CancellationToken token);
 
     Task<int> DeleteAsync(DeleteModel req, CancellationToken token);
+
+    Task<int> RestoreAsync(RestoreModel req, CancellationToken token);
   }
 }

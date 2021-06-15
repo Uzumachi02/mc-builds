@@ -54,10 +54,31 @@ namespace Uzumachi.McBuilds.Data.Repositories {
       return res;
     }
 
+    public async Task<int> RestoreAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null) {
+      comment.UpdateDate = DateTime.UtcNow;
+
+      var sql = $"UPDATE {CommentEntity.TABLE} SET is_deleted = false, update_date = @UpdateDate WHERE id = @Id;";
+      var res = await _dbConnection.ExecuteAsync(
+        new CommandDefinition(sql, comment, transaction, cancellationToken: token)
+      );
+
+      comment.IsDeleted = false;
+
+      return res;
+    }
+
     public async Task<CommentEntity> GetByIdAsync(int id) {
       var sql = $"SELECT * FROM {CommentEntity.TABLE} WHERE id = @id AND is_banned = false AND is_deleted = false LIMIT 1;";
 
       return await _dbConnection.QueryFirstOrDefaultAsync<CommentEntity>(sql, new { id });
+    }
+
+    public async Task<CommentEntity> GetToRestoreAsync(int id, CancellationToken token = default) {
+      var sql = $"SELECT id, parent_id, user_id, item_type_id, item_id, reply_count FROM {CommentEntity.TABLE} " +
+        "WHERE id = @id AND is_banned = false AND is_deleted = true LIMIT 1;";
+
+      return await _dbConnection.QueryFirstOrDefaultAsync<CommentEntity>(
+        new CommandDefinition(sql, new { id }, cancellationToken: token));
     }
 
     public async Task<int> GetTopParentIdByReplyIdAsync(int replyId) {

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Exceptions;
 using Uzumachi.McBuilds.Core.Models;
@@ -79,18 +80,69 @@ namespace Uzumachi.McBuilds.Core.Services {
 
       using var transaction = _unitOfWork.BeginTransaction();
 
-      await _unitOfWork.Comments.DeleteAsync(dbComment, token, transaction);
+      var affected = await _unitOfWork.Comments.DeleteAsync(dbComment, token, transaction);
 
-      if( dbComment.ParentId > 0 ) {
-        await _unitOfWork.Posts.DecrementCommentsAsync(dbComment.ItemId, token, transaction);
-        await _unitOfWork.Comments.DecrementRepliesAsync(dbComment.ParentId, token, transaction);
-      } else if( dbComment.ReplyCount == 0 ) {
-        await _unitOfWork.Posts.DecrementCommentsAsync(dbComment.ItemId, token, transaction);
+      if( affected > 0 ) {
+        await updateCountersAsync(dbComment, false, token, transaction);
       }
 
       transaction.Commit();
 
       return dbComment.Id;
+    }
+
+    public async Task<int> RestoreAsync(RestoreModel req, CancellationToken token) {
+      var dbComment = await _unitOfWork.Comments.GetToRestoreAsync(req.ItemId, token)
+        ?? throw new NotFoundCoreException("Comment", req.ItemId);
+
+      if( dbComment.UserId != req.UserId ) {
+        throw new ForbiddenAccessCoreException();
+      }
+
+      using var transaction = _unitOfWork.BeginTransaction();
+
+      var affected = await _unitOfWork.Comments.RestoreAsync(dbComment, token, transaction);
+
+      if( affected > 0 ) {
+        await updateCountersAsync(dbComment, true, token, transaction);
+      }
+
+      transaction.Commit();
+
+      return dbComment.Id;
+    }
+
+    private async Task<bool> updateCountersAsync(CommentEntity comment, bool increment = true, CancellationToken token = default, IDbTransaction transaction = null) {
+      var updateCounterItem = false;
+
+      if( comment.ParentId > 0 ) {
+        updateCounterItem = true;
+
+        if( increment ) {
+          await _unitOfWork.Comments.IncrementRepliesAsync(comment.ParentId, token, transaction);
+        } else {
+          await _unitOfWork.Comments.DecrementRepliesAsync(comment.ParentId, token, transaction);
+        }
+
+      } else if( comment.ReplyCount == 0 ) {
+        updateCounterItem = true;
+      }
+
+      if( updateCounterItem ) {
+        Task<int> itemTask = null;
+
+        if( comment.ItemTypeId == ItemTypes.Post ) {
+          itemTask = increment
+            ? _unitOfWork.Posts.IncrementCommentsAsync(comment.ItemId, token, transaction)
+            : _unitOfWork.Posts.DecrementCommentsAsync(comment.ItemId, token, transaction);
+        }
+
+        if( itemTask != null ) {
+          await itemTask;
+        }
+      }
+
+      return true;
     }
   }
 }

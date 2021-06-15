@@ -45,5 +45,13 @@ namespace Uzumachi.McBuilds.Api.Controllers {
 
       return Ok(res);
     }
+
+    [HttpPatch("[action]/{id}")]
+    public async Task<ActionResult<int>> RestoreAsync(int id, CancellationToken token) {
+      var req = new RestoreModel { UserId = 1, ItemId = id };
+      var res = await _commentService.RestoreAsync(req, token);
+
+      return Ok(res);
+    }
   }
 }
