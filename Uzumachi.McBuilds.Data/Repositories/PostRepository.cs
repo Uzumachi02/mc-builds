@@ -108,13 +108,16 @@ namespace Uzumachi.McBuilds.Data.Repositories {
     }
 
     public async Task<int> IncrementCommentsAsync(int postID, CancellationToken token, IDbTransaction transaction = null) {
-      return await incrementCounterAsync(postID, "comment_count", token, transaction);
+      return await updateCounterAsync(postID, "comment_count", true, token, transaction);
     }
 
+    public async Task<int> DecrementCommentsAsync(int postID, CancellationToken token, IDbTransaction transaction = null) {
+      return await updateCounterAsync(postID, "comment_count", false, token, transaction);
+    }
 
-    private Task<int> incrementCounterAsync(int postID, string counterName, CancellationToken token, IDbTransaction transaction = null) {
+    private Task<int> updateCounterAsync(int postID, string counterName, bool increment = true, CancellationToken token = default, IDbTransaction transaction = null) {
       var sqlQuery = string.Format(
-        "UPDATE {0} SET {1} = {1} + 1 WHERE id = @postID RETURNING {1};",
+        "UPDATE {0} SET {1} = {1} " + (increment ? "+" : "-") + " 1 WHERE id = @postID RETURNING {1};",
         PostEntity.TABLE, counterName
       );
 

@@ -34,5 +34,7 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
     Task<int> UpdateAsync(PostEntity post, CancellationToken token, IDbTransaction transaction = null);
 
     Task<int> IncrementCommentsAsync(int postID, CancellationToken token, IDbTransaction transaction = null);
+
+    Task<int> DecrementCommentsAsync(int postID, CancellationToken token, IDbTransaction transaction = null);
   }
 }

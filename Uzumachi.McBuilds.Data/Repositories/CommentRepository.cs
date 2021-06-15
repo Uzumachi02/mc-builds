@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace Uzumachi.McBuilds.Data.Repositories {
       _dbConnection = dbConnection;
 
     public async Task<int> CreateAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null) {
+      comment.CreateDate = comment.UpdateDate = DateTime.UtcNow;
+
       var sql = $"INSERT INTO {CommentEntity.TABLE} " +
         "(parent_id, user_id, item_type_id, item_id, reply_id, reply_user_id, text, create_date, update_date) VALUES " +
         "(@ParentId, @UserId, @ItemTypeId, @ItemId, @ReplyId, @ReplyUserId, @Text, @CreateDate, @UpdateDate) RETURNING ID;";
@@ -29,11 +32,26 @@ namespace Uzumachi.McBuilds.Data.Repositories {
     }
 
     public async Task<int> UpdateAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null) {
+      comment.UpdateDate = DateTime.UtcNow;
+
       var sql = $"UPDATE {CommentEntity.TABLE} SET text = @Text, update_date = @UpdateDate WHERE id = @Id;";
 
       return await _dbConnection.ExecuteAsync(
         new CommandDefinition(sql, comment, transaction, cancellationToken: token)
       );
+    }
+
+    public async Task<int> DeleteAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null) {
+      comment.UpdateDate = DateTime.UtcNow;
+
+      var sql = $"UPDATE {CommentEntity.TABLE} SET is_deleted = true, update_date = @UpdateDate WHERE id = @Id;";
+      var res = await _dbConnection.ExecuteAsync(
+        new CommandDefinition(sql, comment, transaction, cancellationToken: token)
+      );
+
+      comment.IsDeleted = true;
+
+      return res;
     }
 
     public async Task<CommentEntity> GetByIdAsync(int id) {
@@ -53,16 +71,20 @@ namespace Uzumachi.McBuilds.Data.Repositories {
     }
 
     public async Task<int> IncrementRepliesAsync(int commentId, CancellationToken token, IDbTransaction transaction = null) {
-      return await incrementCounterAsync(commentId, "reply_count", token, transaction);
+      return await updateCounterAsync(commentId, "reply_count", true, token, transaction);
     }
 
-    private Task<int> incrementCounterAsync(int commentId, string counterName, CancellationToken token, IDbTransaction transaction = null) {
-      var sqlQuery = string.Format(
-        "UPDATE {0} SET {1} = {1} + 1 WHERE id = @commentId RETURNING {1};",
+    public async Task<int> DecrementRepliesAsync(int commentId, CancellationToken token, IDbTransaction transaction = null) {
+      return await updateCounterAsync(commentId, "reply_count", false, token, transaction);
+    }
+
+    private Task<int> updateCounterAsync(int commentId, string counterName, bool increment = true, CancellationToken token = default, IDbTransaction transaction = null) {
+      var sql= string.Format(
+        "UPDATE {0} SET {1} = {1} " + (increment ? "+" : "-") + " 1 WHERE id = @commentId RETURNING {1};",
         CommentEntity.TABLE, counterName
       );
 
-      return _dbConnection.ExecuteScalarAsync<int>(new CommandDefinition(sqlQuery, new { commentId }, transaction, cancellationToken: token));
+      return _dbConnection.ExecuteScalarAsync<int>(new CommandDefinition(sql, new { commentId }, transaction, cancellationToken: token));
     }
   }
 }

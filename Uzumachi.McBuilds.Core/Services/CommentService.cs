@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Exceptions;
 using Uzumachi.McBuilds.Core.Models;
@@ -42,8 +41,6 @@ namespace Uzumachi.McBuilds.Core.Services {
 
       using var transaction = _unitOfWork.BeginTransaction();
 
-      newComment.CreateDate = newComment.UpdateDate = DateTime.UtcNow;
-
       int commentId = await _unitOfWork.Comments.CreateAsync(newComment, token, transaction);
 
       await _unitOfWork.Posts.IncrementCommentsAsync(newComment.ItemId, token, transaction);
@@ -66,9 +63,32 @@ namespace Uzumachi.McBuilds.Core.Services {
       }
 
       dbComment.Text = comment.Text;
-      dbComment.UpdateDate = DateTime.UtcNow;
 
       await _unitOfWork.Comments.UpdateAsync(dbComment, token);
+
+      return dbComment.Id;
+    }
+
+    public async Task<int> DeleteAsync(DeleteModel req, CancellationToken token) {
+      var dbComment = await _unitOfWork.Comments.GetByIdAsync(req.ItemId)
+        ?? throw new NotFoundCoreException("Comment", req.ItemId);
+
+      if( dbComment.UserId != req.UserId ) {
+        throw new ForbiddenAccessCoreException();
+      }
+
+      using var transaction = _unitOfWork.BeginTransaction();
+
+      await _unitOfWork.Comments.DeleteAsync(dbComment, token, transaction);
+
+      if( dbComment.ParentId > 0 ) {
+        await _unitOfWork.Posts.DecrementCommentsAsync(dbComment.ItemId, token, transaction);
+        await _unitOfWork.Comments.DecrementRepliesAsync(dbComment.ParentId, token, transaction);
+      } else if( dbComment.ReplyCount == 0 ) {
+        await _unitOfWork.Posts.DecrementCommentsAsync(dbComment.ItemId, token, transaction);
+      }
+
+      transaction.Commit();
 
       return dbComment.Id;
     }

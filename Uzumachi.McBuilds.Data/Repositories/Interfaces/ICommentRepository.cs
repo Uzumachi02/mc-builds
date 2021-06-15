@@ -17,7 +17,13 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
     /// <returns>The number of rows affected.</returns>
     Task<int> UpdateAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null);
 
+    /// <returns>The number of rows affected.</returns>
+    Task<int> DeleteAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null);
+
     /// <returns>Count replies.</returns>
     Task<int> IncrementRepliesAsync(int commentId, CancellationToken token, IDbTransaction transaction = null);
+
+    /// <returns>Count replies.</returns>
+    Task<int> DecrementRepliesAsync(int commentId, CancellationToken token, IDbTransaction transaction = null);
   }
 }
