@@ -35,13 +35,18 @@ namespace Uzumachi.McBuilds.Core {
        .ForType<CommentCreateRequest>()
        .ForType<CommentCreateModel>();
 
+      config.AdaptFrom(nameof(CommentUpdateRequest))
+       .ForType<CommentUpdateRequest>()
+       .ForType<CommentUpdateModel>();
+
       config.GenerateMapper("[name]Mapper")
         .ForType<PostCreateModel>()
         .ForType<PostUpdateModel>()
         .ForType<PostDto>()
         .ForType<PostAttachmentDto>()
         .ForType<PostFilters>()
-        .ForType<CommentCreateModel>();
+        .ForType<CommentCreateModel>()
+        .ForType<CommentUpdateModel>();
     }
   }
 }

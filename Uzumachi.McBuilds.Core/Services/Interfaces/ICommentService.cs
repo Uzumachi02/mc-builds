@@ -7,5 +7,7 @@ namespace Uzumachi.McBuilds.Core.Services.Interfaces {
   public interface ICommentService {
 
     Task<int> CreateForPostAsync(CommentCreateModel comment, CancellationToken token);
+
+    Task<int> UpdateAsync(CommentUpdateModel comment, CancellationToken token);
   }
 }

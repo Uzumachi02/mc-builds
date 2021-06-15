@@ -28,6 +28,14 @@ namespace Uzumachi.McBuilds.Data.Repositories {
       return resId;
     }
 
+    public async Task<int> UpdateAsync(CommentEntity comment, CancellationToken token, IDbTransaction transaction = null) {
+      var sql = $"UPDATE {CommentEntity.TABLE} SET text = @Text, update_date = @UpdateDate WHERE id = @Id;";
+
+      return await _dbConnection.ExecuteAsync(
+        new CommandDefinition(sql, comment, transaction, cancellationToken: token)
+      );
+    }
+
     public async Task<CommentEntity> GetByIdAsync(int id) {
       var sql = $"SELECT * FROM {CommentEntity.TABLE} WHERE id = @id AND is_banned = false AND is_deleted = false LIMIT 1;";
 

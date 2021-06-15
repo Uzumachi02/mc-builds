@@ -25,5 +25,16 @@ namespace Uzumachi.McBuilds.Api.Controllers {
 
       return Ok(res);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<int>> UpdateAsync(int id, CommentUpdateRequest req, CancellationToken token) {
+      var commentModel = req.AdaptToCommentUpdateModel();
+      commentModel.Id = id;
+      commentModel.UserId = 1;
+
+      var res = await _commentService.UpdateAsync(commentModel, token);
+
+      return Ok(res);
+    }
   }
 }

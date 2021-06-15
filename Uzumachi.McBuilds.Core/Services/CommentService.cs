@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Exceptions;
 using Uzumachi.McBuilds.Core.Models;
@@ -41,7 +42,7 @@ namespace Uzumachi.McBuilds.Core.Services {
 
       using var transaction = _unitOfWork.BeginTransaction();
 
-      newComment.CreateDate = newComment.UpdateDate = System.DateTime.UtcNow;
+      newComment.CreateDate = newComment.UpdateDate = DateTime.UtcNow;
 
       int commentId = await _unitOfWork.Comments.CreateAsync(newComment, token, transaction);
 
@@ -54,6 +55,22 @@ namespace Uzumachi.McBuilds.Core.Services {
       transaction.Commit();
 
       return commentId;
+    }
+
+    public async Task<int> UpdateAsync(CommentUpdateModel comment, CancellationToken token) {
+      var dbComment = await _unitOfWork.Comments.GetByIdAsync(comment.Id)
+        ?? throw new NotFoundCoreException("Comment", comment.Id);
+
+      if( dbComment.UserId != comment.UserId ) {
+        throw new ForbiddenAccessCoreException();
+      }
+
+      dbComment.Text = comment.Text;
+      dbComment.UpdateDate = DateTime.UtcNow;
+
+      await _unitOfWork.Comments.UpdateAsync(dbComment, token);
+
+      return dbComment.Id;
     }
   }
 }
