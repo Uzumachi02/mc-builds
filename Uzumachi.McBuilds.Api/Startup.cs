@@ -54,6 +54,7 @@ namespace Uzumachi.McBuilds.Api {
       // injection services
       services.AddScoped<IPostsService, PostsService>();
       services.AddScoped<ILikesService, LikesService>();
+      services.AddScoped<ICommentService, CommentService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -27,7 +27,7 @@
   </Target>
 
   <Target Name="Mapster" AfterTargets="AfterBuild">
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
+    <!--<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />-->
     <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -o Mappers -n Uzumachi.McBuilds.Core.Mappers" />
   </Target>
 </Project>

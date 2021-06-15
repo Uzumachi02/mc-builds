@@ -8,6 +8,8 @@ namespace Uzumachi.McBuilds.Domain.Entities {
 
     public int Id { get; set; }
 
+    public int ParentId { get; set; }
+
     public int UserId { get; set; }
 
     public int ItemTypeId { get; set; }
