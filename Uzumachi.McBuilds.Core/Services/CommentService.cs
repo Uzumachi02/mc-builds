@@ -2,10 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Exceptions;
+using Uzumachi.McBuilds.Core.Mappers;
 using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Data.Interfaces;
+using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Entities;
+using Uzumachi.McBuilds.Domain.Requests;
 using Uzumachi.McBuilds.Domain.Types;
 
 namespace Uzumachi.McBuilds.Core.Services {
@@ -110,6 +113,15 @@ namespace Uzumachi.McBuilds.Core.Services {
       transaction.Commit();
 
       return dbComment.Id;
+    }
+
+    public async Task<CommentDto> GetByIdAsync(int id, PostGetRequest req) {
+      var dbComment = await _unitOfWork.Comments.GetByIdAsync(id)
+        ?? throw new NotFoundCoreException("Comment", id);
+
+      var comment = dbComment.AdaptToCommentDto();
+
+      return comment;
     }
 
     private async Task<bool> updateCountersAsync(CommentEntity comment, bool increment = true, CancellationToken token = default, IDbTransaction transaction = null) {

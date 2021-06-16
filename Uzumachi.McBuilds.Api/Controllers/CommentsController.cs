@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Mappers;
 using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
+using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Requests;
 
 namespace Uzumachi.McBuilds.Api.Controllers {
@@ -52,6 +53,13 @@ namespace Uzumachi.McBuilds.Api.Controllers {
       var res = await _commentService.RestoreAsync(req, token);
 
       return Ok(res);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CommentDto>> GetByIdAsync(int id, [FromQuery] PostGetRequest req) {
+      var comment = await _commentService.GetByIdAsync(id, req);
+
+      return Ok(comment);
     }
   }
 }

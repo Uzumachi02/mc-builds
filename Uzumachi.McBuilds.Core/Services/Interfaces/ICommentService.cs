@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Models;
+using Uzumachi.McBuilds.Domain.Dtos;
+using Uzumachi.McBuilds.Domain.Requests;
 
 namespace Uzumachi.McBuilds.Core.Services.Interfaces {
 
@@ -13,5 +15,7 @@ namespace Uzumachi.McBuilds.Core.Services.Interfaces {
     Task<int> DeleteAsync(DeleteModel req, CancellationToken token);
 
     Task<int> RestoreAsync(RestoreModel req, CancellationToken token);
+
+    Task<CommentDto> GetByIdAsync(int id, PostGetRequest req);
   }
 }
