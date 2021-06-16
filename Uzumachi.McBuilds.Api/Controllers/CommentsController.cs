@@ -6,6 +6,7 @@ using Uzumachi.McBuilds.Core.Models;
 using Uzumachi.McBuilds.Core.Services.Interfaces;
 using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Requests;
+using Uzumachi.McBuilds.Domain.Responses;
 
 namespace Uzumachi.McBuilds.Api.Controllers {
 
@@ -60,6 +61,13 @@ namespace Uzumachi.McBuilds.Api.Controllers {
       var comment = await _commentService.GetByIdAsync(id, req);
 
       return Ok(comment);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<ItemsResponse<CommentDto>>> GetListAsync([FromQuery] CommentListRequest req) {
+      var comments = await _commentService.GetListAsync(req);
+
+      return Ok(comments);
     }
   }
 }

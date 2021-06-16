@@ -43,6 +43,10 @@ namespace Uzumachi.McBuilds.Core {
        .ForType<CommentEntity>()
        .ForType<CommentDto>();
 
+      config.AdaptFrom(nameof(CommentListRequest))
+       .ForType<CommentListRequest>()
+       .ForType<CommentFilters>();
+
       config.GenerateMapper("[name]Mapper")
         .ForType<PostCreateModel>()
         .ForType<PostUpdateModel>()
@@ -51,7 +55,8 @@ namespace Uzumachi.McBuilds.Core {
         .ForType<PostFilters>()
         .ForType<CommentCreateModel>()
         .ForType<CommentUpdateModel>()
-        .ForType<CommentDto>();
+        .ForType<CommentDto>()
+        .ForType<CommentFilters>();
     }
   }
 }

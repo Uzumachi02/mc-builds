@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Uzumachi.McBuilds.Core.Exceptions;
@@ -9,6 +10,7 @@ using Uzumachi.McBuilds.Data.Interfaces;
 using Uzumachi.McBuilds.Domain.Dtos;
 using Uzumachi.McBuilds.Domain.Entities;
 using Uzumachi.McBuilds.Domain.Requests;
+using Uzumachi.McBuilds.Domain.Responses;
 using Uzumachi.McBuilds.Domain.Types;
 
 namespace Uzumachi.McBuilds.Core.Services {
@@ -122,6 +124,26 @@ namespace Uzumachi.McBuilds.Core.Services {
       var comment = dbComment.AdaptToCommentDto();
 
       return comment;
+    }
+
+    public async Task<ItemsResponse<CommentDto>> GetListAsync(CommentListRequest req) {
+      var filters = req.AdaptToCommentFilters();
+      var countComments = await _unitOfWork.Comments.GetListCountAsync(filters);
+
+      var result = new ItemsResponse<CommentDto> {
+        Count = countComments
+      };
+
+      if( countComments == 0 ) {
+        result.Items = System.Array.Empty<CommentDto>();
+        return result;
+      }
+
+      var dbComments = await _unitOfWork.Comments.GetListAsync(filters);
+      var comments = dbComments.Select(x => x.AdaptToCommentDto()).ToArray();
+
+      result.Items = comments;
+      return result;
     }
 
     private async Task<bool> updateCountersAsync(CommentEntity comment, bool increment = true, CancellationToken token = default, IDbTransaction transaction = null) {

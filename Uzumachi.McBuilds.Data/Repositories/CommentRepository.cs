@@ -1,8 +1,10 @@
 ﻿using Dapper;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Uzumachi.McBuilds.Data.Filters;
 using Uzumachi.McBuilds.Data.Repositories.Interfaces;
 using Uzumachi.McBuilds.Domain.Entities;
 
@@ -71,6 +73,26 @@ namespace Uzumachi.McBuilds.Data.Repositories {
       var sql = $"SELECT * FROM {CommentEntity.TABLE} WHERE id = @id AND is_banned = false AND is_deleted = false LIMIT 1;";
 
       return await _dbConnection.QueryFirstOrDefaultAsync<CommentEntity>(sql, new { id });
+    }
+
+    public async Task<int> GetListCountAsync(CommentFilters filters) {
+      var sql = $"SELECT COUNT(*) FROM {CommentEntity.TABLE} AS base WHERE base.is_banned = false AND base.is_deleted = false";
+      var parameters = new DynamicParameters();
+
+      sql += filters.GetWhereSql(parameters, true);
+
+      return await _dbConnection.ExecuteScalarAsync<int>(sql, parameters);
+    }
+
+    public async Task<IEnumerable<CommentEntity>> GetListAsync(CommentFilters filters) {
+      var sql = $"SELECT * FROM {CommentEntity.TABLE} AS base WHERE base.is_banned = false AND base.is_deleted = false";
+      var parameters = new DynamicParameters();
+
+      sql += filters.GetWhereSql(parameters, true);
+      sql += filters.GetOrderSql();
+      sql += filters.GetLimitSql();
+
+      return await _dbConnection.QueryAsync<CommentEntity>(sql, parameters);
     }
 
     public async Task<CommentEntity> GetToRestoreAsync(int id, CancellationToken token = default) {

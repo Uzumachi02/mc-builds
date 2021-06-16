@@ -1,6 +1,8 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Uzumachi.McBuilds.Data.Filters;
 using Uzumachi.McBuilds.Domain.Entities;
 
 namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
@@ -8,6 +10,10 @@ namespace Uzumachi.McBuilds.Data.Repositories.Interfaces {
   public interface ICommentRepository {
 
     Task<CommentEntity> GetByIdAsync(int id);
+
+    Task<int> GetListCountAsync(CommentFilters filters);
+
+    Task<IEnumerable<CommentEntity>> GetListAsync(CommentFilters filters);
 
     Task<CommentEntity> GetToRestoreAsync(int id, CancellationToken token = default);
 
